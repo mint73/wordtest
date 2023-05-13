@@ -1,26 +1,63 @@
 ﻿[
   {
-    "question": "a",
-    "answer": "b"
+    "question": "wolf",
+    "answer": "狼"
   },
   {
-    "question": "f",
-    "answer": "g"
+    "question": "raise",
+    "answer": "育てる、上げる"
   },
   {
-    "question": "e",
-    "answer": "f"
+    "question": "female",
+    "answer": "女性の"
   },
   {
-    "question": "w",
-    "answer": "x"
+    "question": "birth",
+    "answer": "誕生"
   },
   {
-    "question": "q",
-    "answer": "r"
+    "question": "dig",
+    "answer": "掘る"
   },
   {
-    "question": "l",
-    "answer": "m"
+    "question": "hole",
+    "answer": "穴"
+  },
+  {
+    "question": "within",
+    "answer": "の内部に"
+  },
+  {
+    "question": "while",
+    "answer": "の間ずっと"
+  },
+  {
+    "question": "hunt",
+    "answer": "狩る、捜す"
+  },
+  {
+    "question": "instead",
+    "answer": "その代わりに"
+  },
+  {
+    "question": "behind",
+    "answer": "後ろに"
+  },
+  {
+    "question": "guard",
+    "answer": "を守る、を見張る"
+  },
+  {
+    "question": "history",
+    "answer": "歴史"
+  },
+  {
+    "question": "tie",
+    "answer": "きずな、ネクタイ、を結ぶ"
+  },
+  {
+    "question": "culture",
+    "answer": "文化"
   }
 ]
+
