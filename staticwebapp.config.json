@@ -1,0 +1,5 @@
+{
+    "route": "wordtest",
+    "rewrite": "index.html"
+}
+
