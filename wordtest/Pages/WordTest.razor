@@ -1,0 +1,294 @@
+@page "/wordtest"
+@inject HttpClient Http
+
+<PageTitle>単語練習</PageTitle>
+
+<h1>単語練習</h1><br />
+
+<details>
+	<summary>データの読み込み</summary><br />
+
+	<button class="btn btn-primary" @onclick="b1">デフォルトデータ読み込み</button><br /><br />
+
+	<!--
+	<p><InputFile accept="text/csv,text/plain" OnChange="LoadFileB" /></p>
+	<button class="btn btn-primary" @onclick="b2">ローカルデータ読み込み</button><br /><br />
+	-->
+
+	<div class="btn btn-primary file-input-button btn-one" @onclick="b2">
+		<InputFile accept="text/csv,text/plain" OnChange="LoadFileB" />ローカルデータ読み込み
+	</div><br /><br />
+	<style>
+	.file-input-button {
+		cursor: pointer;
+		position: relative;
+	}
+	
+		.file-input-button input[type=file] {
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+		}
+	
+	.btn-one {
+		background: #305b76;
+	}
+	</style>
+
+	@code
+	{
+		int FileReadNum = 1;
+		private void b1()
+		{
+			FileReadNum = 1;
+		}
+		private void b2()
+		{
+			// ファイル選択がされていたら続ける
+			if (file != null)
+			{
+				FileReadNum = 2;
+			}
+		}
+	}
+</details>
+<br />
+<br />
+
+<!-- # # 問題 # # -->
+<!-- # サンプルデータ # -->
+@if (FileReadNum == 1)
+{
+	@if (words == null)
+	{
+		<p><em>Loading...</em></p>
+	}
+	else
+	{
+		<center>
+		<h5>問題<br />
+		<strong>@words[@num].question</strong></h5>
+		<br />
+		<h5>答え<br />
+		<strong>
+		@if (writeA == true){@words[@num].answer}
+		else{<br />}
+		</strong></h5>
+		<br />
+		<button class="btn btn-primary" @onclick="random">@AnswerModeA</button><br />
+		<br />
+		<!--
+		<br />
+		<button class="btn btn-primary" @onclick="change">上下入れ替え</button><br />
+		-->
+		</center>
+		<br />
+		<br />
+
+		<details>
+		<summary>元データ一覧</summary>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>問題</th>
+					<th>答え</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var word in words)
+				{
+					<tr>
+						<td>@word.question</td>
+						<td>@word.answer</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		</details><br />
+	}
+}
+@code
+{
+	public class Word
+	{
+		public string? question { get; set; }
+		public string? answer { get; set; }
+	}
+
+	// 数
+	int num = 0;
+	Random rand = new System.Random();
+
+	// サーバーのjsonファイル読み込み
+	private Word[]? words;
+
+	// リンクの外部化(他のところから変更できるように)
+	string? link = "sample-data/wordtest.json";
+
+	protected override async Task OnInitializedAsync()
+	{
+		words = await Http.GetFromJsonAsync<Word[]>(link);
+	}
+
+	// 答え
+	bool writeA = true;
+
+	// 切り替え
+	string AnswerModeA = "次の問題を表示";
+	// ランダム
+	private void random()
+	{
+		if (AnswerModeA == "次の問題を表示")
+		{
+			// null回避用のif
+			if (words is not null)
+				num = rand.Next(0, words.Length);
+			writeA = false;
+			AnswerModeA = "答えを表示";
+		}
+		else
+		{
+			writeA = true;
+			AnswerModeA = "次の問題を表示";
+		}
+
+	}
+
+/*
+	private void change()
+	{
+		// 答え->tmp,問題->答え,tmp->問題に代入
+		string?[] temp;
+		string[] newQuestion;
+		string[] newAnswer;
+		if (newAnswer is not null)
+		{
+			Array.Copy(newAnswer, temp, newAnswer.Length);
+		}
+		else
+		{
+			Array.Copy(words.answer, temp, words.answer.Length);
+		}
+		if (newQuestion is not null)
+		{
+			Array.Copy(newQuestion, newAnswer, newAnswer.Length);
+		}
+		else
+		{
+			Array.Copy(words.question, newAnswer, nweAnswer.Length);
+		}
+		Array.Copy(temp, newAnswer, newAnswer.Length);
+	}
+*/
+}
+
+<!-- # ローカルデータ # -->
+@if (FileReadNum == 2)
+{
+	@if (file == null)
+	{
+		<p><em>Loading...</em></p>
+	}
+	else
+	{
+		<center>
+		<h5>問題<br />
+		<strong>@CsvRows[@numB].questionB</strong></h5>
+		<br />
+		<h5>答え<br />
+		<strong>
+		@if (writeB == true){@CsvRows[@numB].answerB}
+		else{<br />}
+		</strong></h5>
+		<br />
+		<button class="btn btn-primary" @onclick="randomB">@AnswerModeB</button><br />
+		<!--
+		<br />
+		<button class="btn btn-primary">上下入れ替え</button><br />
+		-->
+		</center>
+		<br />
+		<br />
+
+		<details>
+		<summary>元データ一覧</summary>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>問題</th>
+					<th>答え</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var QA in CsvRows)
+				{
+					<tr>
+						<td>@QA.questionB</td>
+						<td>@QA.answerB</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		</details><br />
+	}
+}
+@code
+{
+	public class CsvRead
+	{
+		public string? questionB { get; set; }
+		public string? answerB { get; set; }
+	}
+
+	public List<CsvRead> CsvRows { get; set; } = new List<CsvRead>();
+
+	IBrowserFile? file;
+	private async Task<CsvRead[]> LoadFileB(InputFileChangeEventArgs e)
+	{
+		file = e.File;
+		using var memoryStream = new MemoryStream();
+		await file.OpenReadStream().CopyToAsync(memoryStream);
+
+		var csvData = System.Text.Encoding.UTF8.GetString(memoryStream.ToArray());
+		var csvRows = csvData.Split(new[] {"\n", "\r"}, StringSplitOptions.RemoveEmptyEntries).Where(row => !string.IsNullOrEmpty(row));
+
+		var csvReads = new List<CsvRead>();
+
+		foreach (var row in csvRows)
+		{
+			var columns = row.Split(",").Select(column => column.Trim()).ToArray();
+			csvReads.Add(new CsvRead
+			{
+				questionB = columns[0],
+				answerB = columns[1]
+			});
+		}
+		CsvRows = csvReads;
+		return csvReads.ToArray();
+	}
+
+	// 数
+	int numB = 0;
+	// 答え
+	bool writeB = true;
+
+	// AnswerMode
+	string AnswerModeB = "次の問題を表示";
+	// ランダム
+	private void randomB()
+	{
+		if (AnswerModeB == "次の問題を表示")
+		{
+			// null回避用のif
+			if (CsvRows is not null)
+				numB = rand.Next(0, CsvRows.Count);
+			writeB = false;
+			AnswerModeB = "答えを表示";
+		}
+		else
+		{
+			writeB = true;
+			AnswerModeB = "次の問題を表示";
+		}
+	}
+}
