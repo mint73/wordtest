@@ -17,14 +17,14 @@
 ## 開発者向け情報
 ### 開発環境
 - プログラム言語: C#
-- フレームワーク: Blazor wasm / .NET7.0
+- フレームワーク: Blazor wasm / .NET8.0
 
 ### 公開環境
 - 公開場所: GitHub Pages
 
 ## 再現
 ### コマンドで動かす場合
-1. .net7.0 sdk(dotnet)をダウンロードする。
+1. .net8.0 sdk(dotnet)をダウンロードする。
 2. 作業ファイルに移動
 ```shell
 $ cd wordtest
