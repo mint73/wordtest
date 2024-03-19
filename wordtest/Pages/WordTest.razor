@@ -9,12 +9,6 @@
 	<summary>データの読み込み</summary><br />
 
 	<button class="btn btn-primary" @onclick="b1">デフォルトデータ読み込み</button><br /><br />
-
-	<!--
-	<p><InputFile accept="text/csv,text/plain" OnChange="LoadFileB" /></p>
-	<button class="btn btn-primary" @onclick="b2">ローカルデータ読み込み</button><br /><br />
-	-->
-
 	<div class="btn btn-primary file-input-button btn-one" @onclick="b2">
 		<InputFile accept="text/csv,text/plain" OnChange="LoadFileB" />ローカルデータ読み込み
 	</div><br /><br />
@@ -24,11 +18,11 @@
 		position: relative;
 	}
 	
-		.file-input-button input[type=file] {
-			position: absolute;
-			opacity: 0;
-			cursor: pointer;
-		}
+	.file-input-button input[type=file] {
+		position: absolute;
+		opacity: 0;
+		cursor: pointer;
+	}
 	
 	.btn-one {
 		background: #305b76;
@@ -46,9 +40,7 @@
 		{
 			// ファイル選択がされていたら続ける
 			if (file != null)
-			{
 				FileReadNum = 2;
-			}
 		}
 	}
 </details>
@@ -264,6 +256,7 @@
 			});
 		}
 		CsvRows = csvReads;
+		b2();
 		return csvReads.ToArray();
 	}
 
